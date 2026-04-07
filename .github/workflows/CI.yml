@@ -70,7 +70,7 @@ jobs:
           DB_PASSWORD: test
 
       - name: Run tests
-        run: php artisan test --verbose
+        run: php artisan test
         env:
           DB_CONNECTION: pgsql
           DB_HOST: 127.0.0.1
@@ -125,14 +125,13 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
+          tools: composer
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
 
-      - name: Run Laravel Security Checker
-        run: |
-          composer require --dev laravel/legacy-factories
-          ./vendor/bin/security-checker security:check
+      - name: Run Composer Audit
+        run: composer audit
 
   # Job 4: Сборка Docker образа (проверка)
   docker:
