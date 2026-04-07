@@ -1,6 +1,6 @@
 FROM php:8.4-cli
 
-# 1. Установка системных зависимостей и Node.js (используем стабильную 22 версию)
+# 1. Установка системных зависимостей и Node.js
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     libzip-dev \
@@ -8,9 +8,12 @@ RUN apt-get update && apt-get install -y \
     gnupg \
     ca-certificates \
     && mkdir -p /etc/apt/keyrings \
-    && curl -fsSL https://nodesource.com | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
-    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://nodesource.com nodistro main" | tee /etc/apt/sources.list.d/nodesource.list \
-    && apt-get update && apt-get install -y nodejs \
+    && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \
+        | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
+    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x bookworm main" \
+        > /etc/apt/sources.list.d/nodesource.list \
+    && apt-get update \
+    && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
 # 2. Установка PHP расширений
